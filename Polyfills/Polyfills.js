@@ -51,23 +51,53 @@ function myReducer(accumulator, value) {
 
 var finalValue = arr.myReduce(myReducer, 10);
 
-console.log(finalValue);
+// console.log(finalValue);
+
+// CALL
+function callFunction() {
+  console.log(this.name);
+}
+
+Function.prototype.myCall = function (obj, ...args) {
+  obj._this = this;
+  obj._this(...args);
+};
+
+var obj = { name: "Anant" };
+// callFunction.myCall(obj);
 
 // BIND
 function fun() {
-  console.log(this);
+  console.log(this.name);
 }
 
 const obj = {
   name: "Anant",
 };
 
-Function.prototype.myBind = function (obj) {
-  var dummyFunction = this;
-  function finalFunction() {
-    dummyFunction.call(obj);
-  }
-  return finalFunction;
+Function.prototype.myBind = function (obj, ...args) {
+  obj._this = this;
+  return function () {
+    obj._this(...args);
+  };
 };
 
 var finalFunction = fun.myBind(obj);
+// finalFunction();
+
+// APPLY
+
+var obj = {
+  val: 2,
+};
+
+function applyFunction(a = 0, b = 0, c = 0) {
+  console.log(this.val + a + b + c);
+}
+
+Function.prototype.myApply = function (obj, args) {
+  obj._this = this;
+  args === undefined ? obj._this() : obj._this(...args);
+};
+
+applyFunction.myApply(obj, [1]);
