@@ -52,3 +52,22 @@ function myReducer(accumulator, value) {
 var finalValue = arr.myReduce(myReducer, 10);
 
 console.log(finalValue);
+
+// BIND
+function fun() {
+  console.log(this);
+}
+
+const obj = {
+  name: "Anant",
+};
+
+Function.prototype.myBind = function (obj) {
+  var dummyFunction = this;
+  function finalFunction() {
+    dummyFunction.call(obj);
+  }
+  return finalFunction;
+};
+
+var finalFunction = fun.myBind(obj);
