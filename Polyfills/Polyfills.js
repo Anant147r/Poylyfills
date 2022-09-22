@@ -71,7 +71,7 @@ function fun() {
   console.log(this.name);
 }
 
-const obj = {
+var obj = {
   name: "Anant",
 };
 
@@ -101,3 +101,25 @@ Function.prototype.myApply = function (obj, args) {
 };
 
 applyFunction.myApply(obj, [1]);
+
+// COMPOSITION POLYFILL
+const addTwo = (val) => {
+  return val + 2;
+};
+
+const subtractThree = (val) => {
+  return val - 3;
+};
+
+const mulFour = (val) => {
+  return val * 4;
+};
+
+const evaluate = (...functions) => {
+  return function (args) {
+    return functions.reduceRight((accumulator, fun) => fun(accumulator), args);
+  };
+};
+
+const solve = evaluate(addTwo, subtractThree, mulFour);
+console.log(solve(5));
